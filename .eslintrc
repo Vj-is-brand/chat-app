@@ -5,8 +5,7 @@
         "prettier"
     ],
     "plugins": [
-        "react-hooks",
-        "firebase"
+        "react-hooks"
     ],
     "env": {
         "browser": true
@@ -54,8 +53,13 @@
         ],
         "react-hooks/rules-of-hooks": "error",
         "react-hooks/exhaustive-deps": "warn",
-        "arrow-body-style": [0], 
-        "prefer-arrow-callback": [0],
-        "firebase/no-unuused-vars": "error" 
+        "arrow-body-style": [
+            0
+        ],
+        "prefer-arrow-callback": [
+            0
+        ],
+        "react/function-component-definition": "off",
+        "import/no-extraneous-dependencies": "off"
     }
 }
