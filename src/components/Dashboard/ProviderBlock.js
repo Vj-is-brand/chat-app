@@ -31,7 +31,7 @@ const ProviderBlock = () => {
       updateIsConnected(providerId, false);
       Alert.info(`Disconnected from ${providerId}`, 4000);
     } catch (error) {
-      Alert.error('error.message', 4000);
+      Alert.error(error.message, 4000);
     }
   };
 
