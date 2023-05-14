@@ -4,7 +4,7 @@ import { auth, database } from '../misc/firebase';
 const ProfileContext = createContext();
 
 export const ProfileProvider = ({ children }) => {
-  const [profile, setProfile] = useState(false);
+  const [profile, setProfile] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
