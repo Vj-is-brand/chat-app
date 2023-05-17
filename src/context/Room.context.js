@@ -1,27 +1,27 @@
-import React,{ createContext,useState,useEffect } from "react";
-import { database } from "../misc/firebase";
-import { transformToArrayWithId } from "../misc/helper";
+import React, { createContext, useContext, useEffect, useState } from 'react';
+import { database } from '../misc/firebase';
+import { transformToArrayWithId } from '../misc/helper';
 
-const RoomsContext = createContext();
+const RoomContext = createContext();
 
-export const RoomsProvider = ({children}) => {
-    const [rooms, setRooms] = useState(null);
+export const RoomsProvider = ({ children }) => {
+  const [rooms, setRooms] = useState(null);
 
-    useEffect(() => {
-        const roomListRef = database.ref('rooms');
+  useEffect(() => {
+    const roomLisRef = database.ref('rooms');
 
-        roomListRef.on('value', snap => {
-            // console.log('snap.val()',snap.val());
-            const data =transformToArrayWithId(snap.val());
-            console.log({data})
-        });
-    
-      return () => {
-        roomListRef.off();
-      }
-    }, []);
+    roomLisRef.on('value', snap => {
+        const data = transformToArrayWithId(snap.val());
+        //   console.log('snap.val()', data);
+        setRooms(data);
+    });
 
-    return(
-    <RoomsContext.Provider value={rooms}>{children}</RoomsContext.Provider>
-    );
+    return () => {
+        roomLisRef.off();
+    };
+  }, []);
+
+  return <RoomContext.Provider value={rooms}>{children}</RoomContext.Provider>;
 };
+
+export const useRooms = ()=> useContext(RoomContext);
