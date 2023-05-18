@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Loader, Nav } from 'rsuite';
-import { useRooms } from '../../context/room.context';
+import { useRooms } from '../../context/Room.context';
 import RoomItem from './RoomItem';
 
 const ChatRoomList = ({ aboveEleHeight }) => {

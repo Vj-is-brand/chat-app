@@ -4,7 +4,7 @@ import './styles/main.scss';
 import { Switch, Route } from 'react-router-dom';
 import PrivateRoute from './components/PrivateRoute';
 import PublicRoute from './components/PublicRoute';
-import Home from './pages/Home';
+import Home from './pages/home/index';
 import SignIn from './pages/SignIn';
 import { ProfileProvider } from './context/profile.contex';
 
