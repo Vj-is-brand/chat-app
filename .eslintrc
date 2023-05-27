@@ -70,6 +70,7 @@
                 "selector": "CallExpression[callee.object.name='console'][callee.property.name!=/^(log|warn|error|info|trace)$/]",
                 "message": "Unexpected property on console object was called"
             }
-        ]
+        ],
+        "react/self-closing-comp": "off" // Disable the self-closing component rule
     }
 }
