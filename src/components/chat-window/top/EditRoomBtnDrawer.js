@@ -39,7 +39,7 @@ const EditRoomBtnDrawer = () => {
       <Button className="br-circle" size="sm" color="red" onClick={open}>
         A
       </Button>
-      <Drawer show={isOpen} onHide={close} full={isMobile} placement='right'>
+      <Drawer show={isOpen} onHide={close} full={isMobile} placement="right">
         <Drawer.Header>
           <Drawer.Title>Edit room</Drawer.Title>
         </Drawer.Header>
@@ -47,7 +47,7 @@ const EditRoomBtnDrawer = () => {
           <EditableInput
             initialValue={name}
             onSave={onNameSave}
-            label={<h6 className='mb-2'>Name</h6>}
+            label={<h6 className="mb-2">Name</h6>}
             emptyMsg="message cannot be empty"
           />
           <EditableInput
@@ -59,8 +59,9 @@ const EditRoomBtnDrawer = () => {
           />
         </Drawer.Body>
         <Drawer.Footer>
-          <Button block onClick={close} />
-          close
+          <Button block onClick={close}>
+            Close
+          </Button>
         </Drawer.Footer>
       </Drawer>
     </div>

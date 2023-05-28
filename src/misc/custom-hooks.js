@@ -38,7 +38,7 @@ export const useMediaQuery = query => {
       userStatusRef.on('value',snap=>{
         if(snap.exists()){
           const data = snap.val();
-          console.log(snap.val());
+          // console.log(snap.val());
           setPresence(data);
         }
       })

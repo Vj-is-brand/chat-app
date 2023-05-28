@@ -7,8 +7,8 @@ const ProfileInfoBtnModal = ({ profile, ...btnProps }) => {
   const { isOpen, close, open } = useModalState();
   const { name, avatar, createdAt } = profile;
   const shortName = profile.name.split(' ')[0];
-  console.log(profile.name);
-  console.log(shortName);
+  // console.log(profile.name);
+  // console.log(shortName);
   const memeberSince = new Date(createdAt).toLocaleDateString();
   return (
     <>
