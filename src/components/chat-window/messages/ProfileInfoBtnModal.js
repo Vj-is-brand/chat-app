@@ -1,15 +1,16 @@
 import React from 'react';
-import { Button, Modal } from 'rsuite';
+import { Button,Modal } from 'rsuite';
 import { useModalState } from '../../../misc/custom-hooks';
 import ProfileAvatar from '../../ProfileAvatar';
 
-const ProfileInfoBtnModal = ({ profile, ...btnProps }) => {
+const ProfileInfoBtnModal = ({ profile,children,...btnProps }) => {
   const { isOpen, close, open } = useModalState();
   const { name, avatar, createdAt } = profile;
   const shortName = profile.name.split(' ')[0];
   // console.log(profile.name);
   // console.log(shortName);
   const memeberSince = new Date(createdAt).toLocaleDateString();
+
   return (
     <>
       <Button {...btnProps} onClick={open}>
@@ -26,6 +27,7 @@ const ProfileInfoBtnModal = ({ profile, ...btnProps }) => {
           <p>Joined on {memeberSince}</p>
         </Modal.Body>
         <Modal.Footer>
+        {children}
           <Button onClick={close} block >close</Button>
         </Modal.Footer>
       </Modal>
