@@ -6,8 +6,9 @@ import ProfileAvatar from '../../ProfileAvatar';
 import ProfileInfoBtnModal from './ProfileInfoBtnModal';
 import { useCurrentRoom } from '../../../context/create-room.context';
 import { auth } from '../../../misc/firebase';
+import IconBtnControl from './IconBtnControl';
 
-const MessageItem = ({ message,handleAdmin }) => {
+const MessageItem = ({ message,children,handleAdmin }) => {
   const { author, createdAt, text } = message;
   const isAdmin = useCurrentRoom(v => v.isAdmin);
   const admins = useCurrentRoom(v => v.admins);
@@ -49,6 +50,14 @@ const MessageItem = ({ message,handleAdmin }) => {
         <TimeAgo
           datetime={createdAt}
           className="font-normal text-black-45 ml-2"
+        />
+        <IconBtnControl
+          isVisible
+          iconName="heart"
+          color="red"
+          toolTip="Like this message"
+          onClick={()=>{}}
+          badgeContent={5}
         />
       </div>
       <div>
