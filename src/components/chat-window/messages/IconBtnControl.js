@@ -8,7 +8,6 @@ const ConditionalBadge = ({ condition, children }) => {
 const IconBtnControl = ({
   isVisible,
   iconName,
-  color,
   toolTip,
   onClick,
   badgeContent,
@@ -28,7 +27,6 @@ const IconBtnControl = ({
           speaker={<Tooltip>{toolTip}</Tooltip>}
         >
           <IconButton
-            {...(true ? { color: 'blue' } : {})}
             {...props}
             onClick={onClick}
             circle

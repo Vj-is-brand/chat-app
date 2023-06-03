@@ -7,24 +7,25 @@ import ProfileInfoBtnModal from './ProfileInfoBtnModal';
 import { useCurrentRoom } from '../../../context/create-room.context';
 import { auth } from '../../../misc/firebase';
 import IconBtnControl from './IconBtnControl';
+import { useHover, useMediaQuery } from '../../../misc/custom-hooks';
 
-const MessageItem = ({ message,children,handleAdmin }) => {
-  const { author, createdAt, text } = message;
+const MessageItem = ({ message, children, handleAdmin, handleLikes }) => {
+  const { author, createdAt, text,likes,likesCount } = message;
+
+  const [selfRef,isHovered] = useHover();
+  const isMobile = useMediaQuery('(max-width:992px)');
+  const canShowIcons = isMobile || isHovered;
   const isAdmin = useCurrentRoom(v => v.isAdmin);
   const admins = useCurrentRoom(v => v.admins);
 
   const isMsgAuthorAdmin = admins.includes(author.uid);
-  // console.log(author.uid);
-  // console.log(auth.currentUser.uid);
-  // console.log(isMsgAuthorAdmin);
-  // console.log(isAdmin);
   const isAuthor = auth.currentUser.uid === author.uid;
   const canGrantAdmin = isAdmin && !isAuthor;
-  // console.log(isAuthor);
-  // console.log(canGrantAdmin);
+
+  const isLiked = likes && Object.keys(likes).includes(auth.currentUser.uid);
 
   return (
-    <li className="padded mb-1">
+    <li className={`padded mb-1 cursor-pointer ${isHovered ? 'bg-black-02' : ''}`} ref={selfRef}>
       <div className="d-flex align-items-center font-bolder mb-1">
         <PresenceDot uid={author.uid} />
         <ProfileAvatar
@@ -33,7 +34,6 @@ const MessageItem = ({ message,children,handleAdmin }) => {
           className="ml-1"
           size="xs"
         />
-        {/* <span className='ml-2'>{author.name}</span> */}
         <ProfileInfoBtnModal
           profile={author}
           appearance="link"
@@ -52,12 +52,12 @@ const MessageItem = ({ message,children,handleAdmin }) => {
           className="font-normal text-black-45 ml-2"
         />
         <IconBtnControl
-          isVisible
+        {...(isLiked ? {color:'red'} : {})}
+          isVisible={canShowIcons}
           iconName="heart"
-          color="red"
           toolTip="Like this message"
-          onClick={()=>{}}
-          badgeContent={5}
+          onClick={() => handleLikes(message.id)}
+          badgeContent={likesCount}
         />
       </div>
       <div>

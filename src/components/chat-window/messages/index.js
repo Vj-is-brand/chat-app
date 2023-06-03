@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router';
-import { database } from '../../../misc/firebase';
+import { Alert } from 'rsuite';
+import { auth, database } from '../../../misc/firebase';
 import { transformToArrayWithId } from '../../../misc/helper';
 import MessageItem from './MessageItem';
 
@@ -25,31 +26,64 @@ const Message = () => {
     };
   }, [chatId]);
 
-  const handleAdmin = useCallback( uid => {
-    const adminRef = database.ref(`rooms/${chatId}/admins`);
-    let alertMsg;
-    adminRef.transaction(admins =>{
-      if (admins) {
-        if(admins[uid]){
-          admins[uid]=null;
-          alertMsg = 'admin permission removed';
-          }else{
+  const handleAdmin = useCallback(
+    uid => {
+      const adminRef = database.ref(`rooms/${chatId}/admins`);
+      let alertMsg;
+      adminRef.transaction(admins => {
+        if (admins) {
+          if (admins[uid]) {
+            admins[uid] = null;
+            alertMsg = 'admin permission removed';
+          } else {
             admins[uid] = true;
-          alertMsg = 'admin permission granted';
+            alertMsg = 'admin permission granted';
+          }
         }
-      }
-      return admins;
-    })
+        return admins;
+      });
     },
     [chatId]
   );
+  const handleLikes = useCallback(async msgId => {
+    const { uid } = auth.currentUser;
+    const messageRef = database.ref(`/messages/${msgId}`);
+    let alertMsg;
+    await messageRef.transaction(msg => {
+      if (msg) {
+        if (msg.likes && msg.likes[uid]) {
+          msg.likesCount -= 1;
+          msg.likes[uid] = null;
+          alertMsg = 'Like removed';
+          // console.log(msg.likeCount)
+          Alert.info(alertMsg,920);
+        } else {
+          msg.likesCount += 1;
+          if (!msg.likes) {
+            msg.likes = {};
+          }
+          msg.likes[uid] = true;
+          alertMsg = 'like added';
+          Alert.info(alertMsg,920);
+        }
+      }
+      return msg;
+    });
+  }, []);
 
   return (
     <ul className="msg-list custom-scroll">
       {isChatEmpty && <span>no messages yet....</span>}
       {canShowMessages &&
         messages.map(msg => {
-          return <MessageItem key={msg.id} message={msg} handleAdmin={handleAdmin}/>;
+          return (
+            <MessageItem
+              key={msg.id}
+              message={msg}
+              handleAdmin={handleAdmin}
+              handleLikes={handleLikes}
+            />
+          );
         })}
     </ul>
   );
