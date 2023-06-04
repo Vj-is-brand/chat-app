@@ -9,10 +9,16 @@ import { auth } from '../../../misc/firebase';
 import IconBtnControl from './IconBtnControl';
 import { useHover, useMediaQuery } from '../../../misc/custom-hooks';
 
-const MessageItem = ({ message, children, handleAdmin, handleLikes }) => {
-  const { author, createdAt, text,likes,likesCount } = message;
+const MessageItem = ({
+  message,
+  children,
+  handleAdmin,
+  handleLikes,
+  handleDelete,
+}) => {
+  const { author, createdAt, text, likes, likesCount } = message;
 
-  const [selfRef,isHovered] = useHover();
+  const [selfRef, isHovered] = useHover();
   const isMobile = useMediaQuery('(max-width:992px)');
   const canShowIcons = isMobile || isHovered;
   const isAdmin = useCurrentRoom(v => v.isAdmin);
@@ -25,7 +31,10 @@ const MessageItem = ({ message, children, handleAdmin, handleLikes }) => {
   const isLiked = likes && Object.keys(likes).includes(auth.currentUser.uid);
 
   return (
-    <li className={`padded mb-1 cursor-pointer ${isHovered ? 'bg-black-02' : ''}`} ref={selfRef}>
+    <li
+      className={`padded mb-1 cursor-pointer ${isHovered ? 'bg-black-02' : ''}`}
+      ref={selfRef}
+    >
       <div className="d-flex align-items-center font-bolder mb-1">
         <PresenceDot uid={author.uid} />
         <ProfileAvatar
@@ -52,13 +61,21 @@ const MessageItem = ({ message, children, handleAdmin, handleLikes }) => {
           className="font-normal text-black-45 ml-2"
         />
         <IconBtnControl
-        {...(isLiked ? {color:'red'} : {})}
+          {...(isLiked ? { color: 'red' } : {})}
           isVisible={canShowIcons}
           iconName="heart"
           toolTip="Like this message"
           onClick={() => handleLikes(message.id)}
           badgeContent={likesCount}
         />
+        {isAuthor && (
+          <IconBtnControl
+            isVisible={canShowIcons}
+            iconName="close"
+            toolTip="Delete this message"
+            onClick={() => handleDelete(message.id)}
+          />
+        )}
       </div>
       <div>
         <span className="word-break-all">{text}</span>
