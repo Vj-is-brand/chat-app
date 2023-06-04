@@ -16,7 +16,7 @@ function assembleMessage(profile, chatId) {
       ...(profile.avatar ? { avatar: profile.avatar } : {}),
     },
     createdAt: firebase.database.ServerValue.TIMESTAMP,
-    likesCount:0,
+    likesCount: 0,
   };
 }
 
@@ -33,11 +33,11 @@ const ChatBottom = () => {
     if (input.trim() === '') {
       return;
     }
-    
+
     const msgData = assembleMessage(profile, chatId);
-    msgData.text=input;
+    msgData.text = input;
     const updates = {};
-    
+
     const messageId = database.ref('messages').push().key;
     updates[`messages/${messageId}`] = msgData;
     updates[`rooms/${chatId}/lastmessage`] = {
@@ -55,17 +55,48 @@ const ChatBottom = () => {
     }
   };
 
-  const onKeyDown = (ev) => {
-    if(ev.keyCode === 13){
+  const onKeyDown = ev => {
+    if (ev.keyCode === 13) {
       ev.preventDefault();
       onSendClick();
     }
-  }
-    
+  };
+
+  const afterUpload = useCallback(
+    async files => {
+      setIsLoading(true);
+      const updates = {};
+
+      files.forEach(file => {
+        const msgData = assembleMessage(profile, chatId);
+        msgData.file = file;
+
+        const messageId = database.ref('messages').push().key;
+        updates[`messages/${messageId}`] = msgData;
+      });
+
+      const lastMsgId = Object.keys(updates).pop();
+      updates[`rooms/${chatId}/lastmessage`] = {
+        ...updates[lastMsgId],
+        msgId: lastMsgId,
+      };
+
+      try {
+        await database.ref().update(updates);
+        Alert.info("Files sent successfully");
+        setIsLoading(false);
+      } catch (error) {
+        setIsLoading(false);
+        Alert.error(error.message);
+      }
+    },
+    [chatId, profile]
+  );
+
   return (
     <div>
       <InputGroup>
-      <AttachmentBtnModal/>
+        <AttachmentBtnModal  afterUpload={afterUpload}/>
         <Input
           placeholder="write a message..."
           value={input}

@@ -75,7 +75,9 @@ const AttachmentBtnModal = ({ afterUpload }) => {
           />
         </ModalBody>
         <ModalFooter>
-          <Button block disabled={isLoading} onClick={onUpload}>send to chat</Button>
+          <Button block disabled={isLoading} onClick={onUpload}>
+            send to chat
+          </Button>
           <div className="text-right mr-2">
             <small>* only files lessthan 5 Mb is allowed</small>
           </div>
