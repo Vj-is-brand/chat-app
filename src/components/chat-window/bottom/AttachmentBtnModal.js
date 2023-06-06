@@ -1,11 +1,6 @@
 import React, { useState } from 'react';
 import { useParams } from 'react-router';
 import { Alert, Button, Icon, InputGroup, Modal, Uploader } from 'rsuite';
-import InputGroupButton from 'rsuite/lib/InputGroup/InputGroupButton';
-import ModalBody from 'rsuite/lib/Modal/ModalBody';
-import ModalFooter from 'rsuite/lib/Modal/ModalFooter';
-import ModalHeader from 'rsuite/lib/Modal/ModalHeader';
-import ModalTitle from 'rsuite/lib/Modal/ModalTitle';
 import { useModalState } from '../../../misc/custom-hooks';
 import { storage } from '../../../misc/firebase';
 
@@ -59,10 +54,10 @@ const AttachmentBtnModal = ({ afterUpload }) => {
       </InputGroup.Button>
 
       <Modal show={isOpen} onHide={close}>
-        <ModalHeader>
-          <ModalTitle>Upload Files</ModalTitle>
-        </ModalHeader>
-        <ModalBody>
+        <Modal.Header>
+          <Modal.Title>Upload Files</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
           <Uploader
             autoUpload={false}
             fileList={fileList}
@@ -73,15 +68,15 @@ const AttachmentBtnModal = ({ afterUpload }) => {
             className="w-100"
             disabled={isLoading}
           />
-        </ModalBody>
-        <ModalFooter>
+        </Modal.Body>
+        <Modal.Footer>
           <Button block disabled={isLoading} onClick={onUpload}>
             send to chat
           </Button>
           <div className="text-right mr-2">
             <small>* only files lessthan 5 Mb is allowed</small>
           </div>
-        </ModalFooter>
+        </Modal.Footer>
       </Modal>
     </>
   );

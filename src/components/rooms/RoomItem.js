@@ -8,11 +8,13 @@ const RoomItem = ({ room }) => {
     <div>
       <div className="d-flex align-items-center justify-content-between">
         <h3 className="text-disappear">{name}</h3>
-        <TimeAgo
+       <div className="font-normal text-black-45">
+       <TimeAgo  
           datetime={
             lastmessage ? new Date(lastmessage.createdAt) : new Date(createdAt)
           }
         />
+       </div>
       </div>
 
         
@@ -26,13 +28,13 @@ const RoomItem = ({ room }) => {
               size="sm"
             />
           </div>
-          <div className="text-disappear ml-2">
+          <div className="text-black-45 text-disappear ml-2 ">
             <div className="italic">{lastmessage.author.name}</div>
-            <span>{lastmessage.text}</span>
+            <span>{lastmessage.text || lastmessage.file.name}</span>
           </div>
         </>
       ) : (
-        <span>No message yet..............</span>
+        <span className="font-normal text-black-45">No message yet..............</span>
       )}
       </div>
     </div>

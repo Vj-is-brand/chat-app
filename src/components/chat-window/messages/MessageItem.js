@@ -8,6 +8,19 @@ import { useCurrentRoom } from '../../../context/create-room.context';
 import { auth } from '../../../misc/firebase';
 import IconBtnControl from './IconBtnControl';
 import { useHover, useMediaQuery } from '../../../misc/custom-hooks';
+import ImgBtnModal from './ImgBtnModal';
+
+const renderFileMessage = file => {
+  if (file.contentType.includes('image')) {
+    return (
+      <div className="height-220">
+        <ImgBtnModal src={file.url} fileName={file.name} />
+      </div>
+    );
+  }
+
+  return <a href={file.url}>Download {file.name}</a>;
+};
 
 const MessageItem = ({
   message,
@@ -16,7 +29,7 @@ const MessageItem = ({
   handleLikes,
   handleDelete,
 }) => {
-  const { author, createdAt, text, likes, likesCount } = message;
+  const { author, createdAt, text, file, likes, likesCount } = message;
 
   const [selfRef, isHovered] = useHover();
   const isMobile = useMediaQuery('(max-width:992px)');
@@ -78,7 +91,8 @@ const MessageItem = ({
         )}
       </div>
       <div>
-        <span className="word-break-all">{text}</span>
+        {text && <span className="word-break-all">{text}</span>}
+        {file && renderFileMessage(file)}
       </div>
     </li>
   );
