@@ -8,7 +8,7 @@ export const getNameInitials = name => {
   return splitName[0][0];
 };
 
-export function transformToArray(snapVal){
+export function transformToArray(snapVal) {
   return snapVal ? Object.keys(snapVal) : [];
 }
 
@@ -42,9 +42,19 @@ export async function getUserUpdates(userId, keyToUpdate, value, db) {
   });
 
   snapRooms.forEach(roomSnap => {
-    updates[`/rooms/${roomSnap.key}/lastmessage/author/${keyToUpdate}`] =
-      value;
+    updates[`/rooms/${roomSnap.key}/lastmessage/author/${keyToUpdate}`] = value;
   });
 
   return updates;
+}
+
+export function groupBy(array, groupingKeyFn) {
+  return array.reduce((result, item) => {
+    const groupingKey = groupingKeyFn(item);
+    if(!result[groupingKey]){
+      result[groupingKey] = [];
+    }
+    result[groupingKey].push(item);
+    return result;
+  }, {});
 }

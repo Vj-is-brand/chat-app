@@ -19,6 +19,18 @@ const renderFileMessage = file => {
     );
   }
 
+  if (file.contentType.includes('audio')) {
+    return (
+      <>
+        {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
+        <audio controls>
+          <source src={file.url} type="audio/mp3" />
+          YOUR BROWSER DOES NOT SUPPORT THIS MEDIA type
+        </audio>
+      </>
+    );
+  }
+
   return <a href={file.url}>Download {file.name}</a>;
 };
 
@@ -86,7 +98,7 @@ const MessageItem = ({
             isVisible={canShowIcons}
             iconName="close"
             toolTip="Delete this message"
-            onClick={() => handleDelete(message.id)}
+            onClick={() => handleDelete(message.id,message.file)}
           />
         )}
       </div>
